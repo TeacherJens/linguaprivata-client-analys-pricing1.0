@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lingua Privata — Client Analyser</title>
+<style>
+:root{--bg:#f7f4ee;--paper:#fffdf9;--ink:#1b211d;--muted:#6f746f;--line:#d8d2c7;--accent:#7a6a4f;--deep:#263129;--soft:#ece7dd;--ok:#2f5d42}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}.brand{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:28px}.brand h1{font-family:Georgia,"Times New Roman",serif;font-weight:500;letter-spacing:.18em;font-size:22px;margin:0}.brand .sub{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;margin-bottom:26px}.hero .lead,.hero .note{background:var(--paper);border:1px solid var(--line);padding:28px}.hero h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:34px;line-height:1.1;margin:0 0 12px}.hero p{margin:0;color:var(--muted)}.hero .note strong{display:block;color:var(--ink);font-size:13px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.card{background:var(--paper);border:1px solid var(--line);padding:24px;margin-bottom:22px}.card h3{font-family:Georgia,"Times New Roman",serif;font-size:22px;font-weight:400;margin:0 0 18px}.section-title{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:16px 0 10px}.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}label{display:block;font-size:12px;color:#555b56;margin-bottom:6px}input,select,textarea{width:100%;padding:12px 12px;border:1px solid #cfc8bc;background:#fffefb;color:var(--ink);font:inherit;border-radius:0;outline:none}textarea{min-height:92px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:9px 18px}.check{display:flex;gap:8px;align-items:center;font-size:13px;color:#454a46}.check input{width:auto}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}.btn{border:1px solid var(--deep);background:var(--deep);color:white;padding:12px 18px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}.btn.alt{background:transparent;color:var(--deep)}
+.result{display:none}.result.show{display:block}.result .headline{display:flex;justify-content:space-between;gap:20px;align-items:start;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:18px}.result .headline h3{font-size:28px;margin:0}.badge{font-size:11px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);padding:8px 10px;color:var(--accent)}.price{font-family:Georgia,"Times New Roman",serif;font-size:32px;margin:2px 0}.muted{color:var(--muted)}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 20px}.kpi{border:1px solid var(--line);padding:13px;background:#fff}.kpi b{display:block;font-size:17px}.kpi span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.list{margin:8px 0 0;padding-left:18px}.list li{margin:6px 0}.proposal{white-space:pre-wrap;background:#fbf8f2;border-left:3px solid var(--accent);padding:18px;font-family:Georgia,"Times New Roman",serif;font-size:16px}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.saved-list{display:grid;gap:10px;margin-top:10px}.saved-item{border:1px solid var(--line);background:#fff;padding:12px;display:flex;justify-content:space-between;gap:12px;align-items:center}.saved-item small{display:block;color:var(--muted)}.mini{font-size:10px;padding:8px 10px}.status{font-size:11px;color:var(--ok);margin-top:8px}.tax-note{font-size:11px;color:var(--muted);margin-top:10px;padding:12px;border:1px solid var(--line);background:#fbf8f2}.footer{margin-top:28px;padding-top:18px;border-top:1px solid var(--line);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:20px}
+@media(max-width:860px){.hero,.grid,.row,.row3,.kpis{grid-template-columns:1fr}.checks{grid-template-columns:1fr}.brand{align-items:flex-start;gap:12px;flex-direction:column}}
+@media print{body{background:white}.actions,.hero .note{display:none}.card{break-inside:avoid}.wrap{max-width:none;padding:0}.brand{margin-bottom:16px}.result{display:block}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div><h1>LINGUA PRIVATA</h1><div class="sub">Private German Tuition · Internal Client Analyser</div></div><div class="sub">German. Exclusively.</div></div>
+
+  <div class="hero">
+    <div class="lead"><h2>Build the right private German arrangement for each client.</h2><p>Capture the client profile, assess intensity and service level, then generate an internal recommendation, material plan and indicative fee.</p></div>
+    <div class="note"><strong>Internal use only</strong><p>This tool is designed as a private planning aid. Public pricing can remain off the website while proposals are tailored after consultation.</p></div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h3>A. Client Profile</h3>
+        <div class="row"><div><label>Client name / reference</label><input id="name" placeholder="e.g. Client A"></div><div><label>Client email</label><input id="email" type="email" placeholder="e.g. client@example.com"></div></div><div class="row"><div><label>Country / time zone</label><input id="country" placeholder="e.g. USA / New York"></div><div><label>Preferred correspondence language</label><select id="correspondence"><option>English</option><option>German</option><option>Swedish</option></select></div></div>
+        <div class="row"><div><label>Premium client segment</label><select id="clientType"><option value="executive">Executive & Business</option><option value="family">Private Families</option><option value="young">Young Clients</option><option value="relocation">Relocation</option><option value="specialist">Professional Specialists</option><option value="diplomatic">Diplomatic & Public Life</option><option value="lifestyle">Lifestyle & Private Clients</option></select></div><div><label>Age / life stage</label><input id="age" placeholder="e.g. 52, board member / 13, international school"></div></div>
+        <div class="row"><div><label>Specific profile / role</label><select id="profileRole"><option>Executive / board member</option><option>Entrepreneur / investor</option><option>Private family / parent</option><option>Young client / child</option><option>Relocating professional</option><option>Diplomat / embassy staff</option><option>Doctor / medical professional</option><option>Lawyer / legal professional</option><option>Academic / researcher</option><option>Artist / actor / musician</option><option>Professional athlete / coach</option><option>Family office / next generation</option><option>High-net-worth private client</option><option>Retired private client</option><option>Other bespoke profile</option></select></div><div><label>Primary decision-maker / representative</label><input id="guardian" placeholder="e.g. client, parent, family office, PA, HR, embassy"></div></div>
+        <div class="row"><div><label>Native language</label><input id="native" placeholder="e.g. English"></div><div><label>Relationship to German / DACH</label><input id="dach" placeholder="e.g. German clients, Swiss relocation, Austrian family"></div></div>
+        <div class="row"><div><label>Current German level</label><select id="level"><option>A0 / absolute beginner</option><option>A1</option><option>A2</option><option selected>B1</option><option>B2</option><option>C1</option><option>C2 / near-native</option><option>Unknown / assess first</option></select></div><div><label>Target level / outcome</label><input id="target" placeholder="e.g. confident B2 for business meetings"></div></div>
+        <div class="section-title">Objectives</div>
+        <textarea id="goal" placeholder="What does the client actually need German for? Include deadlines, countries, meetings, family situations, relocation, travel, exams, etc."></textarea>
+        <div class="row"><div><label>Timeframe</label><select id="timeframe"><option>Open-ended</option><option>12+ months</option><option>6–12 months</option><option>3–6 months</option><option>1–3 months</option><option>Under 1 month</option></select></div><div><label>Preferred frequency</label><select id="freq"><option>1 session / week</option><option selected>2 sessions / week</option><option>3 sessions / week</option><option>4+ sessions / week</option><option>Intensive days</option></select></div></div>
+        <div class="section-title">Profile & Context</div>
+        <textarea id="context" placeholder="Profession, interests, personality, learning history, travel, family, corporate context, preferred pace, prior courses, relevant German-speaking contacts."></textarea>
+        <div class="section-title">Strengths & Difficulties</div>
+        <textarea id="needs" placeholder="Pronunciation, grammar, listening, confidence, writing, vocabulary, formal register, business communication, cultural nuance, etc."></textarea>
+      </div>
+
+      <div class="card">
+        <h3>B. Service Format</h3>
+        <div class="row"><div><label>Primary format</label><select id="format"><option value="online">Private German — Online</option><option value="regional">Private German — In Person</option><option value="intensive">Private German — Intensive</option><option value="international">International Private Engagement</option><option value="executive">Executive Priority Arrangement</option></select></div><div><label>Session length</label><select id="length"><option value="60">60 minutes</option><option value="90" selected>90 minutes</option><option value="120">120 minutes</option><option value="240">Half day</option><option value="420">Full day</option></select></div></div>
+        <div class="row"><div><label>Sessions / days per month</label><input id="qty" type="number" min="1" value="8"></div><div><label>Programme duration (months)</label><input id="months" type="number" min="1" value="3"></div></div>
+        <div class="section-title">Premium Service Elements</div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="bespoke" checked> Bespoke materials</label>
+          <label class="check"><input type="checkbox" id="priority"> Priority scheduling</label>
+          <label class="check"><input type="checkbox" id="support"> Between-session support</label>
+          <label class="check"><input type="checkbox" id="business"> Business / executive content</label>
+          <label class="check"><input type="checkbox" id="culture"> Cultural briefing</label>
+          <label class="check"><input type="checkbox" id="travel"> Travel / relocation preparation</label>
+          <label class="check"><input type="checkbox" id="presentation"> Presentation / meeting preparation</label>
+          <label class="check"><input type="checkbox" id="confidential"> Enhanced discretion / private-client handling</label>
+          <label class="check"><input type="checkbox" id="family"> Family / young-client programme</label>
+          <label class="check"><input type="checkbox" id="parentReview"> Parent / guardian progress reviews</label>
+          <label class="check"><input type="checkbox" id="school"> School transition / international school support</label>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>C. Travel & International Engagement</h3>
+        <div class="row3"><div><label>Travel days</label><input id="travelDays" type="number" min="0" value="0"></div><div><label>Travel day fee (€)</label><input id="travelFee" type="number" min="0" value="500"></div><div><label>Travel & accommodation (€)</label><input id="travelCost" type="number" min="0" value="0"></div></div>
+        <div class="row"><div><label>International engagement days</label><input id="intlDays" type="number" min="0" value="0"></div><div><label>Preferred daily fee (€)</label><input id="dayFee" type="number" min="0" value="1500"></div></div>
+      </div>
+
+      <div class="card">
+        <h3>D. Billing & Tax Treatment</h3>
+        <div class="row"><div><label>Billing profile</label><select id="billingProfile"><option value="private">Private individual</option><option value="se-business">Swedish business</option><option value="eu-business">EU business with valid VAT number</option><option value="non-eu-business">Non-EU business</option><option value="other">Other / review manually</option></select></div><div><label>VAT / tax treatment</label><select id="taxTreatment"><option value="included">VAT included in professional fee</option><option value="added">VAT added to professional fee</option><option value="reverse">Reverse charge</option><option value="no-se-vat">No Swedish VAT charged</option><option value="review">Review manually before issue</option></select></div></div>
+        <div class="row3"><div><label>VAT rate (%)</label><input id="vatRate" type="number" min="0" max="100" step="0.1" value="25"></div><div><label>Client VAT number</label><input id="vatNumber" placeholder="e.g. SE123456789001"></div><div><label>Invoice currency</label><select id="currency"><option value="EUR">EUR</option><option value="SEK">SEK</option><option value="USD">USD</option><option value="GBP">GBP</option></select></div></div>
+        <div><label>Optional tax wording / internal note</label><input id="taxNoteCustom" placeholder="Leave blank to use the standard wording"></div>
+        <div class="tax-note">Tax treatment is selected manually. The tool does not determine legal VAT liability. Review the final treatment for each client and engagement before issuing an invoice.</div>
+      </div>
+
+      <div class="actions"><button class="btn" onclick="analyse()">Analyse & Build Arrangement</button><button class="btn alt" onclick="window.print()">Print / Save PDF</button><button class="btn alt" onclick="resetForm()">Reset</button></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>What Lingua Privata can create</h3>
+        <div class="section-title">Core programme materials</div>
+        <ul class="list"><li>Personal learning roadmap with milestones</li><li>Bespoke lesson plans and session agendas</li><li>Premium client worksheets and screen-first PDFs</li><li>Role plays, dialogues and scenario training</li><li>Personal vocabulary and phrase banks</li><li>Pronunciation and listening practice</li><li>Grammar explanations adapted to the client's first language</li><li>Reading, writing and comprehension tasks</li></ul>
+        <div class="section-title">Executive & special-purpose German</div>
+        <ul class="list"><li>Meeting and negotiation preparation</li><li>Presentation rehearsal and language refinement</li><li>Business correspondence and email style</li><li>German small talk and social etiquette</li><li>Industry-specific terminology</li><li>Relocation, travel and real-life situation training</li><li>Private intensive days and international engagement plans</li></ul>
+        <div class="section-title">Private families & young clients</div>
+        <ul class="list"><li>Age-appropriate private German programmes</li><li>Home-based or online tuition for young clients</li><li>German for relocation, school transition and international-school contexts</li><li>German for family, grandparents and heritage-language situations</li><li>Parent / guardian progress reviews and learning summaries</li><li>Holiday and travel intensives for families</li><li>Safeguarding-aware lesson planning and clear parent / guardian communication</li></ul>
+        <div class="section-title">Premium client segments</div>
+        <ul class="list"><li><b>Executive & Business</b> — executives, board members, entrepreneurs, investors and German-market responsibilities</li><li><b>Private Families</b> — international families, family offices, heritage-language needs and household-based tuition</li><li><b>Young Clients</b> — children and teenagers in private or international education, relocation or family-language contexts</li><li><b>Relocation</b> — clients moving to Germany, Austria or Switzerland who need language plus practical integration</li><li><b>Professional Specialists</b> — doctors, lawyers, academics, artists, athletes and other specialist professionals</li><li><b>Diplomatic & Public Life</b> — diplomats, embassy staff, public-facing roles and representational communication</li><li><b>Lifestyle & Private Clients</b> — high-net-worth individuals, retirees, second-home owners and clients learning for private life, travel or family</li></ul>
+        <div class="section-title">Ongoing client management</div>
+        <ul class="list"><li>Progress reviews</li><li>Session documentation</li><li>Homework and independent study plans</li><li>Programme adjustments after each milestone</li><li>Personal material archive for each client</li></ul>
+      </div>
+
+      <div id="result" class="card result">
+        <div class="headline"><div><div class="section-title">Recommended Arrangement</div><h3 id="recTitle">—</h3></div><div class="badge" id="tier">Private Client</div></div>
+        <div class="price" id="price">€0</div><div class="muted" id="priceNote">Indicative internal fee</div>
+        <div class="kpis"><div class="kpi"><b id="hours">0</b><span>Contact hours</span></div><div class="kpi"><b id="prep">0</b><span>Prep estimate</span></div><div class="kpi"><b id="effective">€0</b><span>Effective €/work hr</span></div><div class="kpi"><b id="intensity">—</b><span>Intensity</span></div></div>
+        <div class="section-title">Why this arrangement</div><div id="why" class="muted"></div>
+        <div class="section-title">Recommended material plan</div><ul id="materials" class="list"></ul>
+        <div class="section-title">Internal proposal draft</div><div id="proposal" class="proposal"></div><div class="result-actions"><button class="btn" onclick="saveInternalAnalysis()">Save internal analysis</button><button class="btn alt" onclick="saveClientOffer()">Save client offer</button><button class="btn alt" onclick="emailClientOffer()">Email offer</button></div><div id="saveStatus" class="status"></div>
+      </div>
+      <div class="card"><h3>Saved Client Analyses</h3><div class="muted">Stored locally in this browser. Downloaded files remain available independently.</div><div id="savedList" class="saved-list"></div></div>
+    </div>
+  </div>
+
+  <div class="footer"><span>Lingua Privata · Internal planning tool</span><span>Pricing and tax treatment are indicative and should be reviewed before any final proposal or invoice is issued.</span></div>
+</div>
+<script>
+function money(n,c='EUR'){return new Intl.NumberFormat('en-IE',{style:'currency',currency:c,maximumFractionDigits:0}).format(Math.round(n));}
+function val(id){return document.getElementById(id).value}
+function checked(id){return document.getElementById(id).checked}
+let lastAnalysis=null;
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+function stamp(){return new Date().toISOString().slice(0,10)}
+function slug(s){return (s||"client").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"client"}
+function downloadFile(name,content,type="text/html;charset=utf-8"){const b=new Blob([content],{type});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+function baseDoc(title,body){return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><style>body{font-family:Arial,sans-serif;color:#1b211d;background:#f7f4ee;margin:0}main{max-width:820px;margin:40px auto;background:#fffdf9;padding:48px;border:1px solid #d8d2c7}h1,h2{font-family:Georgia,serif;font-weight:400}h1{letter-spacing:.14em;font-size:24px}h2{font-size:30px}.eyebrow{text-transform:uppercase;letter-spacing:.16em;font-size:11px;color:#7a6a4f}.rule{border-top:1px solid #d8d2c7;margin:24px 0}.fee{font-family:Georgia,serif;font-size:30px}.muted{color:#6f746f}.box{background:#fbf8f2;padding:18px;border-left:3px solid #7a6a4f;white-space:pre-wrap}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.item{padding:12px;border:1px solid #e1dbd0}@media(max-width:650px){main{margin:0;padding:28px}.grid{grid-template-columns:1fr}}@media print{body{background:white}main{border:0;margin:0;max-width:none}}</style></head><body><main>${body}</main></body></html>`}
+function ensureAnalysis(){if(!lastAnalysis) analyse(); return lastAnalysis}
+function saveInternalAnalysis(){const a=ensureAnalysis(); if(!a)return; const body=`<div class="eyebrow">Lingua Privata · Internal Client Analysis</div><h1>LINGUA PRIVATA</h1><div class="rule"></div><h2>${esc(a.client)}</h2><div class="grid"><div class="item"><b>Segment</b><br>${esc(a.segment)}</div><div class="item"><b>Profile</b><br>${esc(a.profileRole)}</div><div class="item"><b>Level</b><br>${esc(a.level)}</div><div class="item"><b>Country / time zone</b><br>${esc(a.country)}</div><div class="item"><b>Recommended arrangement</b><br>${esc(a.title)}</div><div class="item"><b>Intensity</b><br>${esc(a.intensity)}</div></div><h3>Client objective</h3><p>${esc(a.goal||a.target)}</p><h3>Context</h3><p>${esc(a.context)}</p><h3>Strengths & difficulties</h3><p>${esc(a.needs)}</p><h3>Internal rationale</h3><p>${esc(a.why)}</p><h3>Material plan</h3><ul>${a.materials.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><h3>Internal calculation</h3><div class="grid"><div class="item"><b>Professional fee</b><br>${esc(a.baseFormatted)}</div><div class="item"><b>Client total after selected VAT treatment</b><br>${esc(a.clientTotalFormatted)}</div><div class="item"><b>Contact hours</b><br>${esc(a.hoursText)}</div><div class="item"><b>Prep estimate</b><br>${esc(a.prepText)}</div><div class="item"><b>Effective ${esc(a.currency)}/work hour</b><br>${esc(a.effectiveFormatted)}</div><div class="item"><b>Tax treatment</b><br>${esc(a.taxLabel)}</div></div><h3>Billing & tax</h3><div class="grid"><div class="item"><b>Billing profile</b><br>${esc(a.billingProfileLabel)}</div><div class="item"><b>VAT rate</b><br>${esc(a.vatRateText)}</div><div class="item"><b>VAT number</b><br>${esc(a.vatNumber||'—')}</div><div class="item"><b>Tax wording</b><br>${esc(a.taxText)}</div></div><h3>Internal proposal draft</h3><div class="box">${esc(a.proposal)}</div><div class="rule"></div><p class="muted">Internal planning document. Pricing and tax treatment remain indicative until the engagement and invoice treatment are confirmed.</p>`; const html=baseDoc(`Internal Analysis — ${a.client}`,body); downloadFile(`LP-internal-analysis-${slug(a.client)}-${stamp()}.html`,html); const records=JSON.parse(localStorage.getItem("lpSavedAnalyses")||"[]"); records.unshift({id:Date.now(),client:a.client,date:new Date().toLocaleString(),html}); localStorage.setItem("lpSavedAnalyses",JSON.stringify(records.slice(0,30))); renderSaved(); document.getElementById("saveStatus").textContent="Internal analysis saved locally and downloaded."}
+function clientOfferText(a){let t=`LINGUA PRIVATA\nPrivate German Tuition\nGerman. Exclusively.\n\n${a.title}\n\nPrepared for: ${a.client}\n`; if(a.guardian)t+=`Representative: ${a.guardian}\n`; t+=`\nA private German engagement designed around the client’s objectives, schedule and preferred format.\n\nArrangement\n• ${a.formatText}\n• ${a.durationText}\n• Individually tailored German tuition\n• Personal preparation and bespoke materials\n`; a.clientScope.forEach(x=>t+=`• ${x}\n`); t+=`\nProfessional fee\n${a.offerFeeLine}\n`; if(a.taxBreakdownLine)t+=`${a.taxBreakdownLine}\n`; t+=`Tax treatment: ${a.taxText}\n`; if(a.vatNumber)t+=`Client VAT number: ${a.vatNumber}\n`; if(a.travelText)t+=`\nTravel & accommodation\n${a.travelText}\n`; t+=`\nThis proposal has been prepared following an individual assessment. The programme may be refined as the client’s objectives develop.\n\nAll arrangements are confirmed privately with Lingua Privata.\n\nenquiries@linguaprivata.com`; return t}
+function saveClientOffer(){const a=ensureAnalysis(); if(!a)return; const body=`<div class="eyebrow">Private German Tuition · German. Exclusively.</div><h1>LINGUA PRIVATA</h1><div class="rule"></div><h2>${esc(a.title)}</h2><p class="muted">Prepared for ${esc(a.client)}</p><p>A private German engagement designed around the client’s objectives, schedule and preferred format.</p><h3>Arrangement</h3><ul><li>${esc(a.formatText)}</li><li>${esc(a.durationText)}</li><li>Individually tailored German tuition</li><li>Personal preparation and bespoke materials</li>${a.clientScope.map(x=>`<li>${esc(x)}</li>`).join("")}</ul><div class="rule"></div><div class="eyebrow">Professional fee</div><div class="fee">${esc(a.offerFeeLine)}</div>${a.taxBreakdownLine?`<p>${esc(a.taxBreakdownLine)}</p>`:""}<p class="muted">${esc(a.taxText)}${a.vatNumber?`<br>Client VAT number: ${esc(a.vatNumber)}`:""}</p>${a.travelText?`<h3>Travel & accommodation</h3><p>${esc(a.travelText)}</p>`:""}<div class="rule"></div><p>This proposal has been prepared following an individual assessment. The programme may be refined as the client’s objectives develop.</p><p class="muted">All arrangements are confirmed privately with Lingua Privata.<br>enquiries@linguaprivata.com</p>`; downloadFile(`Lingua-Privata-Proposal-${slug(a.client)}-${stamp()}.html`,baseDoc(`Lingua Privata Proposal — ${a.client}`,body)); document.getElementById("saveStatus").textContent="Client-facing offer downloaded. Open it in a browser to print/save as PDF if desired."}
+function emailClientOffer(){const a=ensureAnalysis(); if(!a)return; const to=val("email").trim(); const subject=`Lingua Privata — Private German Proposal`; const body=`Dear ${a.client},\n\nThank you for your conversation with Lingua Privata.\n\nPlease find below the outline of your proposed private German arrangement.\n\n${clientOfferText(a)}\n\nKind regards,\nLingua Privata`; location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; document.getElementById("saveStatus").textContent=to?"Email draft opened in your default mail app.":"Email draft opened. Add the client address before sending."}
+function renderSaved(){const el=document.getElementById("savedList");if(!el)return; const records=JSON.parse(localStorage.getItem("lpSavedAnalyses")||"[]"); el.innerHTML=records.length?"":'<div class="muted">No analyses saved in this browser yet.</div>'; records.forEach(r=>{const d=document.createElement("div");d.className="saved-item";d.innerHTML=`<div><b>${esc(r.client)}</b><small>${esc(r.date)}</small></div><div><button class="btn alt mini" data-id="${r.id}">Download</button></div>`; d.querySelector("button").onclick=()=>downloadFile(`LP-internal-analysis-${slug(r.client)}.html`,r.html); el.appendChild(d)})}
+function analyse(){
+  const format=val('format'), qty=+val('qty')||1, months=+val('months')||1, mins=+val('length')||60;
+  const currency=val('currency')||'EUR';
+  const hours=qty*months*(mins/60);
+  let hourly=130, base=0, title='Private German — Online', tier='Private Client';
+  if(format==='online'){hourly=140;title='Private German Signature';}
+  if(format==='regional'){hourly=220;title='Private German — In Person';tier='Private Client · In Person';}
+  if(format==='intensive'){hourly=190;title='Private German Intensive';tier='Intensive';}
+  if(format==='international'){hourly=0;title='International Private Engagement';tier='International';}
+  if(format==='executive'){hourly=185;title='Executive German Private';tier='Priority';}
+  if(hourly) base=hours*hourly;
+  if(checked('bespoke')) base*=1.08;
+  if(checked('priority')) base*=1.12;
+  if(checked('support')) base*=1.08;
+  if(checked('business')) base*=1.08;
+  if(checked('presentation')) base*=1.06;
+  if(checked('confidential')) base*=1.05;
+  const clientType=val('clientType');
+  const profileRole=val('profileRole');
+  if(clientType==='family'||clientType==='young'||checked('family')) base*=1.10;
+  if(clientType==='executive') base*=1.08;
+  if(clientType==='specialist') base*=1.08;
+  if(clientType==='diplomatic') base*=1.12;
+  if(clientType==='lifestyle') base*=1.10;
+  if(clientType==='relocation') base*=1.06;
+  if(checked('parentReview')) base*=1.05;
+  if(checked('school')) base*=1.06;
+  if(clientType==='family') { title='Private German — Family Arrangement'; tier='Private Family'; }
+  if(clientType==='young') { title='Private German — Young Client'; tier='Private Family'; }
+  if(clientType==='relocation') { title='Private German — Relocation Arrangement'; tier='Relocation'; }
+  if(clientType==='specialist') { title='Private German — Specialist Professional'; tier='Specialist'; }
+  if(clientType==='diplomatic') { title='Private German — Diplomatic & Public Life'; tier='Private Client · Diplomatic'; }
+  if(clientType==='lifestyle') { title='Private German — Private Client Arrangement'; tier='Private Client'; }
+  if(clientType==='executive' && format!=='international') { title='Executive German Private'; tier='Executive'; }
+  const intlDays=+val('intlDays')||0, dayFee=+val('dayFee')||0;
+  if(format==='international') base=(intlDays||Math.max(2,qty))*dayFee;
+  const travelDays=+val('travelDays')||0, travelFee=+val('travelFee')||0, travelCost=+val('travelCost')||0;
+  const travelServiceFee=travelDays*travelFee;
+  const total=base + travelServiceFee + travelCost;
+  const billingProfile=val('billingProfile'), taxTreatment=val('taxTreatment'), vatRate=Math.max(0,+val('vatRate')||0), vatNumber=val('vatNumber').trim();
+  const billingProfileLabel=document.getElementById('billingProfile').options[document.getElementById('billingProfile').selectedIndex].text;
+  const taxLabel=document.getElementById('taxTreatment').options[document.getElementById('taxTreatment').selectedIndex].text;
+  let vatAmount=0, clientProfessionalTotal=base, taxText='', taxBreakdownLine='', offerFeeLine='';
+  if(taxTreatment==='included'){vatAmount=vatRate?base-(base/(1+vatRate/100)):0; clientProfessionalTotal=base; offerFeeLine=`${money(base,currency)} incl. VAT`; taxBreakdownLine=vatRate?`Includes ${money(vatAmount,currency)} VAT at ${vatRate}%`:''; taxText=val('taxNoteCustom').trim()||`VAT included in the professional fee at the selected rate of ${vatRate}%.`;}
+  else if(taxTreatment==='added'){vatAmount=base*(vatRate/100); clientProfessionalTotal=base+vatAmount; offerFeeLine=`${money(base,currency)} excl. VAT`; taxBreakdownLine=`VAT ${vatRate}%: ${money(vatAmount,currency)} · Total professional fee: ${money(clientProfessionalTotal,currency)}`; taxText=val('taxNoteCustom').trim()||`VAT is added to the professional fee at the selected rate of ${vatRate}%.`;}
+  else if(taxTreatment==='reverse'){clientProfessionalTotal=base; offerFeeLine=`${money(base,currency)}`; taxText=val('taxNoteCustom').trim()||'Reverse charge applies. No Swedish VAT charged.';}
+  else if(taxTreatment==='no-se-vat'){clientProfessionalTotal=base; offerFeeLine=`${money(base,currency)}`; taxText=val('taxNoteCustom').trim()||'No Swedish VAT charged, subject to the applicable tax rules for the engagement.';}
+  else {clientProfessionalTotal=base; offerFeeLine=`${money(base,currency)}`; taxText=val('taxNoteCustom').trim()||'Tax treatment to be reviewed and confirmed before the final invoice is issued.';}
+  const clientTotal=clientProfessionalTotal+travelServiceFee+travelCost;
+  let prepRatio=.35; if(checked('bespoke')) prepRatio+=.15; if(checked('business')||checked('presentation')) prepRatio+=.1; if(format==='intensive'||format==='international') prepRatio+=.1;
+  const prepHours=Math.max(1,hours*prepRatio);
+  const travelWork=travelDays*6;
+  const workHours=hours+prepHours+travelWork;
+  const revenueForRate=base+travelServiceFee;
+  const eff=workHours? revenueForRate/workHours:0;
+  let intensity='Standard'; const tf=val('timeframe'), freq=val('freq');
+  if(tf==='Under 1 month'||tf==='1–3 months'||freq==='4+ sessions / week'||freq==='Intensive days') intensity='High';
+  if(format==='international'||format==='executive') intensity='Premium';
+  const whyParts=[];
+  whyParts.push(`${val('level')} level with the objective: ${val('target')||'individually defined outcome'}.`);
+  if(val('goal')) whyParts.push(val('goal'));
+  whyParts.push(`Preferred format: ${document.getElementById('format').options[document.getElementById('format').selectedIndex].text}.`);
+  if(checked('priority')) whyParts.push('Priority access and flexible scheduling justify a higher service tier.');
+  whyParts.push(`Client segment: ${document.getElementById('clientType').options[document.getElementById('clientType').selectedIndex].text}; profile: ${profileRole}.`);
+  if(clientType==='family'||clientType==='young'||checked('family')) whyParts.push('The programme is designed around the needs of a private family or young client, with age-appropriate pacing and family communication.');
+  if(clientType==='relocation') whyParts.push('The programme combines German with practical relocation, integration and real-life communication.');
+  if(clientType==='specialist') whyParts.push('The programme requires specialist vocabulary, register and profession-specific scenarios.');
+  if(clientType==='diplomatic') whyParts.push('The programme prioritises discretion, representational language, protocol-sensitive communication and public-facing confidence.');
+  if(clientType==='lifestyle') whyParts.push('The programme prioritises private-life relevance, discretion, travel, family and high-touch personal service.');
+  if(clientType==='executive') whyParts.push('The programme prioritises business relevance, time efficiency and executive communication.');
+  if(checked('school')) whyParts.push('School transition and international-school needs are built into the programme.');
+  if(format==='international') whyParts.push('The engagement is structured as a destination-based private service rather than hourly tuition.');
+  document.getElementById('why').textContent=whyParts.join(' ');
+  const mats=[];
+  mats.push('Personal learning roadmap and milestone plan');
+  mats.push('Session-specific lesson plans tailored to the client profile');
+  if(checked('bespoke')) mats.push('Bespoke premium worksheets and client-specific materials');
+  if(checked('business')) mats.push('Business German scenarios, correspondence and sector vocabulary');
+  if(checked('presentation')) mats.push('Presentation, meeting and negotiation rehearsal');
+  if(checked('culture')) mats.push('Cultural and register briefing for German-speaking contexts');
+  if(checked('travel')) mats.push('Travel, relocation and real-life situation modules');
+  if(clientType==='family'||clientType==='young'||checked('family')) mats.push('Age-appropriate family / young-client lesson design and bespoke materials');
+  if(clientType==='relocation') mats.push('Relocation modules: housing, administration, healthcare, social life and practical DACH communication');
+  if(clientType==='specialist') mats.push(`Specialist German for the client profile: ${profileRole}`);
+  if(clientType==='diplomatic') mats.push('Diplomatic register, protocol-aware language, formal correspondence and representational scenarios');
+  if(clientType==='lifestyle') mats.push('Private-life German for travel, family, cultural participation and chosen lifestyle contexts');
+  if(clientType==='executive') mats.push('Executive communication, meetings, negotiation, leadership language and concise decision-oriented German');
+  if(checked('parentReview')) mats.push('Parent / guardian progress review and learning summary');
+  if(checked('school')) mats.push('School-transition, classroom language and international-school support');
+  if(val('needs')) mats.push(`Focused work on: ${val('needs')}`);
+  mats.push('Progress review and programme adjustment after each milestone');
+  const ul=document.getElementById('materials'); ul.innerHTML=''; mats.forEach(m=>{const li=document.createElement('li');li.textContent=m;ul.appendChild(li)});
+  const duration = months===1?'1 month':`${months} months`;
+  const client = val('name')||'Private Client';
+  let proposal=`${title}\n\nPrepared for: ${client}${val('guardian')?`\nParent / guardian / representative: ${val('guardian')}`:''}\nDuration: ${duration}\nFormat: ${document.getElementById('format').options[document.getElementById('format').selectedIndex].text}\n\nScope\n• Individually tailored German tuition\n• Personal preparation and bespoke materials\n• Ongoing adaptation to the client's objectives`;
+  if(checked('priority')) proposal+='\n• Priority scheduling';
+  if(checked('support')) proposal+='\n• Between-session language support';
+  if(checked('business')) proposal+='\n• Business and executive German';
+  if(checked('culture')) proposal+='\n• Cultural and register guidance';
+  if(clientType==='family'||clientType==='young'||checked('family')) proposal+='\n• Age-appropriate private tuition for the family / young client';
+  if(checked('parentReview')) proposal+='\n• Regular parent / guardian progress reviews';
+  if(checked('school')) proposal+='\n• School-transition and international-school language support';
+  if(format==='international') proposal+='\n• In-person engagement at the client\'s chosen destination';
+  proposal+=`\n\nProfessional fee\n${offerFeeLine}`;
+  if(taxBreakdownLine) proposal+=`\n${taxBreakdownLine}`;
+  proposal+=`\nTax treatment: ${taxText}`;
+  if(vatNumber) proposal+=`\nClient VAT number: ${vatNumber}`;
+  if(travelDays||travelCost) proposal+=`\nTravel arrangements and accommodation: ${travelCost?money(travelCost,currency):'charged separately at cost'}${travelDays?`\nTravel day fee: ${money(travelDays*travelFee,currency)}`:''}`;
+  proposal+='\n\nAll arrangements are confirmed individually following consultation.';
+  const clientScope=[];
+  if(checked('priority')) clientScope.push('Priority scheduling');
+  if(checked('support')) clientScope.push('Between-session language support');
+  if(checked('business')) clientScope.push('Business and executive German');
+  if(checked('culture')) clientScope.push('Cultural and register guidance');
+  if(clientType==='family'||clientType==='young'||checked('family')) clientScope.push('Age-appropriate private tuition for the family / young client');
+  if(checked('parentReview')) clientScope.push('Regular parent / guardian progress reviews');
+  if(checked('school')) clientScope.push('School-transition and international-school language support');
+  if(format==='international') clientScope.push('In-person engagement at the client\'s chosen destination');
+  const formatText=document.getElementById('format').options[document.getElementById('format').selectedIndex].text;
+  const segment=document.getElementById('clientType').options[document.getElementById('clientType').selectedIndex].text;
+  const travelText=(travelDays||travelCost)?`${travelCost?money(travelCost,currency):'Charged separately at cost'}${travelDays?` · Travel-day fee ${money(travelDays*travelFee,currency)}`:''} · Tax treatment on travel-related amounts is confirmed on the final invoice.`:'';
+  lastAnalysis={client,email:val('email'),country:val('country'),segment,profileRole,guardian:val('guardian'),level:val('level'),target:val('target'),goal:val('goal'),context:val('context'),needs:val('needs'),title,tier,intensity,why:whyParts.join(' '),materials:mats,proposal,total,base,hours,prepHours,eff,currency,totalFormatted:money(total,currency),baseFormatted:money(base,currency),clientTotalFormatted:money(clientTotal,currency),effectiveFormatted:money(eff,currency),hoursText:hours.toFixed(hours%1?1:0)+' h',prepText:prepHours.toFixed(1)+' h',formatText,durationText:duration,clientScope,travelText,billingProfile,billingProfileLabel,taxTreatment,taxLabel,vatRate,vatRateText:vatRate?vatRate+'%':'0%',vatAmount,vatNumber,taxText,taxBreakdownLine,offerFeeLine};
+  document.getElementById('recTitle').textContent=title;
+  document.getElementById('tier').textContent=tier;
+  document.getElementById('price').textContent=money(clientTotal,currency);
+  document.getElementById('priceNote').textContent=`Indicative client total · ${taxLabel}${travelCost||travelDays?' · entered travel amounts included':''}`;
+  document.getElementById('hours').textContent=hours.toFixed(hours%1?1:0)+' h';
+  document.getElementById('prep').textContent=prepHours.toFixed(1)+' h';
+  document.getElementById('effective').textContent=money(eff,currency);
+  document.getElementById('intensity').textContent=intensity;
+  document.getElementById('proposal').textContent=proposal;
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function resetForm(){location.reload()}
+renderSaved();
+</script>
+</body>
+</html>
